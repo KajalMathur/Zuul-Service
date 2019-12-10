@@ -1,0 +1,37 @@
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:8761/eureka/
+    instance:
+        instanceId: ${spring.application.name}:${random.value}
+server:
+    port: 8095
+spring:
+    application:
+        name: zuul-service
+zuul:
+    routes:
+        auth:
+            path: /authenticate
+            serviceId: customer-service
+            stripPrefix: false
+        customer:
+            path: /api/customer/**
+            sensitiveHeaders: Cookie,Set-Cookie
+            serviceId: customer-service
+            stripPrefix: false
+        customerproductservice:
+            path: /api/customer/*/product/**
+            sensitiveHeaders: Cookie,Set-Cookie
+            serviceId: product-service
+            stripPrefix: false
+        customers:
+            path: /api/customers/**
+            sensitiveHeaders: Cookie,Set-Cookie
+            serviceId: customer-service
+            stripPrefix: false
+        product:
+            path: /api/products
+            sensitiveHeaders: Cookie,Set-Cookie
+            serviceId: product-service
+            stripPrefix: false
